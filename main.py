@@ -3,6 +3,9 @@ from pydantic import BaseModel, EmailStr
 from email_utils import send_email
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+import smtplib
+from email.message import EmailMessage
+import os
 load_dotenv()
 
 
@@ -43,3 +46,12 @@ def send_email_api(data: EmailRequest):
 @app.get("/health")
 def health():
     return {"ok": True}
+
+@app.get("/debug-env")
+def debug_env():
+    return {
+        "SMTP_HOST": os.getenv("SMTP_HOST"),
+        "SMTP_USER": os.getenv("SMTP_USER"),
+        "SMTP_PASS": bool(os.getenv("SMTP_PASS")),
+        "FROM_EMAIL": os.getenv("FROM_EMAIL")
+    }
