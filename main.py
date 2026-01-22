@@ -2,16 +2,14 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr
 from email_utils import send_email
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-import smtplib
-from email.message import EmailMessage
 import os
+from dotenv import load_dotenv
+
 load_dotenv()
 
+app = FastAPI(title="FastAPI Email Service")
 
-app = FastAPI()
-
-# CORS (for Expo / frontend)
+# CORS (for frontend / Expo)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -46,6 +44,7 @@ def send_email_api(data: EmailRequest):
 @app.get("/health")
 def health():
     return {"ok": True}
+
 
 @app.get("/debug-env")
 def debug_env():
